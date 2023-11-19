@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 @Component
 public class CriterioDeRendaTotalAteMilEQuinhentosReais implements Criterio {
 
-    protected static final BigDecimal RENDA_MAXIMA_DO_CRITERIO = BigDecimal.valueOf(1500);
-    protected static final BigDecimal RENDA_MINIMA_DO_CRITERIO = BigDecimal.valueOf(901);
+    private static final BigDecimal RENDA_MAXIMA_DO_CRITERIO = BigDecimal.valueOf(1500);
+    private static final BigDecimal RENDA_MINIMA_DO_CRITERIO = BigDecimal.valueOf(901);
     protected static final Integer PONTUACAO_ATENDE_CRITERIO = 3;
     protected static final Integer PONTUACAO_NAO_ATENDE_CRITERIO = 0;
     @Override

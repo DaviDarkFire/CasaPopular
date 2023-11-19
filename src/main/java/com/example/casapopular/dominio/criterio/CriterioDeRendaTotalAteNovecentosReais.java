@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Component
 public class CriterioDeRendaTotalAteNovecentosReais implements Criterio{
 
-    protected static final BigDecimal RENDA_PADRAO_DO_CRITERIO = BigDecimal.valueOf(900);
+    private static final BigDecimal RENDA_PADRAO_DO_CRITERIO = BigDecimal.valueOf(900);
     protected static final Integer PONTUACAO_ATENDE_CRITERIO = 5;
     protected static final Integer PONTUACAO_NAO_ATENDE_CRITERIO = 0;
     @Override

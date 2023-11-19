@@ -33,6 +33,19 @@ class CriterioDeQuantidadeDeDependentesMaiorIgualATresTest extends TestUtils {
     }
 
     @Test
+    void deveRetornarPontuacaoDoCriterioCasoFamiliaAtendaCriterioTendoOMinimoDeDependentesDoCriterio() {
+        Pessoa pessoa = criarPessoa(34, 900);
+        Pessoa primeiroDependente = criarPessoa(17, 0);
+        Pessoa segundoDependente = criarPessoa(12, 0);
+        Pessoa terceiroDependente = criarPessoa(12, 0);
+        Familia familia = new Familia(Arrays.asList(pessoa, primeiroDependente, segundoDependente, terceiroDependente));
+
+        Integer pontuacao = criterio.pontuacao(familia);
+
+        Assertions.assertThat(pontuacao).isEqualTo(CriterioDeQuantidadeDeDependentesMaiorIgualATres.PONTUACAO_ATENDE_CRITERIO);
+    }
+
+    @Test
     void deveRetornarPontuacaoZeroCasoFamiliaNaoAtendaCriterio() {
         Pessoa pessoa = criarPessoa(34, 900);
         Pessoa primeiroDependente = criarPessoa(17, 0);

@@ -31,6 +31,28 @@ class CriterioDeRendaTotalAteMilEQuinhentosReaisTest extends TestUtils {
     }
 
     @Test
+    void deveRetornarPontuacaoDoCriterioCasoFamiliaTenhaARendaMaximaQueAtendeCriterio() {
+        Integer rendaQueNaoExcedeRendaDoCriterio = 1500;
+        Pessoa pessoa = criarPessoa(34, rendaQueNaoExcedeRendaDoCriterio);
+        Familia familia = new Familia(Collections.singletonList(pessoa));
+
+        Integer pontuacao = criterio.pontuacao(familia);
+
+        Assertions.assertThat(pontuacao).isEqualTo(CriterioDeRendaTotalAteMilEQuinhentosReais.PONTUACAO_ATENDE_CRITERIO);
+    }
+
+    @Test
+    void deveRetornarPontuacaoDoCriterioCasoFamiliaTenhaARendaMinimaQueAtendeCriterio() {
+        Integer rendaQueNaoExcedeRendaDoCriterio = 901;
+        Pessoa pessoa = criarPessoa(34, rendaQueNaoExcedeRendaDoCriterio);
+        Familia familia = new Familia(Collections.singletonList(pessoa));
+
+        Integer pontuacao = criterio.pontuacao(familia);
+
+        Assertions.assertThat(pontuacao).isEqualTo(CriterioDeRendaTotalAteMilEQuinhentosReais.PONTUACAO_ATENDE_CRITERIO);
+    }
+
+    @Test
     void deveRetornarPontuacaoZeroCasoFamiliaNaoAtendaCriterioComRendaUltrapassandoDoValorMaximo() {
         Pessoa pessoa = criarPessoa(34, 1499);
         Pessoa outraPessoa = criarPessoa(34, 2);

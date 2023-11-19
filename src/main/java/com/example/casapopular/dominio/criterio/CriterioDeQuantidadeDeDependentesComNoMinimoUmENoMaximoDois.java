@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CriterioDeQuantidadeDeDependentesComNoMinimoUmENoMaximoDois implements Criterio {
-    protected static final Integer QUANTIDADE_MINIMA_DEPENDENTES = 1;
-    protected static final Integer QUANTIDADE_MAXIMA_DEPENDENTES = 2;
+    private static final Integer QUANTIDADE_MINIMA_DEPENDENTES = 1;
+    private static final Integer QUANTIDADE_MAXIMA_DEPENDENTES = 2;
     protected static final Integer PONTUACAO_ATENDE_CRITERIO = 2;
     protected static final Integer PONTUACAO_NAO_ATENDE_CRITERIO = 0;
     @Override

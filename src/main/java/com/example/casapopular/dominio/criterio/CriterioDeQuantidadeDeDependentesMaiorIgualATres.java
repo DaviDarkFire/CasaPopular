@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CriterioDeQuantidadeDeDependentesMaiorIgualATres implements Criterio {
 
-    protected static final Integer QUANTIDADE_PADRAO_DEPENDENTES = 3;
+    private static final Integer QUANTIDADE_PADRAO_DEPENDENTES = 3;
     protected static final Integer PONTUACAO_ATENDE_CRITERIO = 3;
     protected static final Integer PONTUACAO_NAO_ATENDE_CRITERIO = 0;
     @Override
