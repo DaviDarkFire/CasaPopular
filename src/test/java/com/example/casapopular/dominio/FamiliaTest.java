@@ -73,8 +73,6 @@ class FamiliaTest {
         Assertions.assertThat(quantidadeDeDependentes).isEqualTo(3);
     }
 
-
-
     private Pessoa criarPessoa(Integer idade, Integer renda) {
         String nomeAleatorio = UUID.randomUUID().toString();
         return new Pessoa(nomeAleatorio, idade, BigDecimal.valueOf(renda));
