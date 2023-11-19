@@ -10,6 +10,7 @@ import java.util.List;
 @Table(name = "Familia")
 public class Familia {
 
+    private final Integer IDADE_MINIMA_PARA_CONSIDERAR_DEPENDENTE = 18;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,20 +25,12 @@ public class Familia {
         this.pessoas = new ArrayList<>(pessoas);
     }
 
-    public void adicionarPessoa(Pessoa pessoa) {
-        pessoas.add(pessoa);
-    }
-
-    public void removerPessoa(Pessoa pessoaASerRemovida) {
-        pessoas.removeIf(pessoa -> pessoa.getIdade().equals(pessoaASerRemovida));
-    }
-
     public BigDecimal renda() {
-        return pessoas.stream().map(pessoa -> pessoa.getRenda()).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return pessoas.stream().map(Pessoa::getRenda).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Long quantidadeDeDependentes() {
-        return pessoas.stream().filter(pessoa -> pessoa.getIdade() < 18).count();
+        return pessoas.stream().filter(pessoa -> pessoa.getIdade() < IDADE_MINIMA_PARA_CONSIDERAR_DEPENDENTE).count();
     }
 
     public List<Pessoa> getPessoas() {
