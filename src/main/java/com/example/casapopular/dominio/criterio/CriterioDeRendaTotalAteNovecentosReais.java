@@ -16,8 +16,7 @@ public class CriterioDeRendaTotalAteNovecentosReais implements Criterio{
         return atendeCriterio(familia) ? PONTUACAO_ATENDE_CRITERIO : PONTUACAO_NAO_ATENDE_CRITERIO;
     }
 
-    @Override
-    public Boolean atendeCriterio(Familia familia) {
+    private Boolean atendeCriterio(Familia familia) {
         return familia.renda().compareTo(RENDA_PADRAO_DO_CRITERIO) <= 0;
     }
 }

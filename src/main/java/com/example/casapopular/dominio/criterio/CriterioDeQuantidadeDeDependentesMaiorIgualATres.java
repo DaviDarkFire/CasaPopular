@@ -14,8 +14,7 @@ public class CriterioDeQuantidadeDeDependentesMaiorIgualATres implements Criteri
         return atendeCriterio(familia) ? PONTUACAO_ATENDE_CRITERIO : PONTUACAO_NAO_ATENDE_CRITERIO;
     }
 
-    @Override
-    public Boolean atendeCriterio(Familia familia) {
+    private Boolean atendeCriterio(Familia familia) {
         return familia.quantidadeDeDependentes() >= QUANTIDADE_PADRAO_DEPENDENTES;
     }
 }

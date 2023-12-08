@@ -17,8 +17,7 @@ public class CriterioDeRendaTotalAteMilEQuinhentosReais implements Criterio {
         return atendeCriterio(familia) ? PONTUACAO_ATENDE_CRITERIO : PONTUACAO_NAO_ATENDE_CRITERIO;
     }
 
-    @Override
-    public Boolean atendeCriterio(Familia familia) {
+    private Boolean atendeCriterio(Familia familia) {
         return familia.renda().compareTo(RENDA_MINIMA_DO_CRITERIO) >= 0 &&
                 familia.renda().compareTo(RENDA_MAXIMA_DO_CRITERIO) <= 0;
     }

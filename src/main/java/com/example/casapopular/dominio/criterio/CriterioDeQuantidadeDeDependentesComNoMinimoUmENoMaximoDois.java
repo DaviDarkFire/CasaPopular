@@ -14,8 +14,7 @@ public class CriterioDeQuantidadeDeDependentesComNoMinimoUmENoMaximoDois impleme
         return atendeCriterio(familia) ? PONTUACAO_ATENDE_CRITERIO : PONTUACAO_NAO_ATENDE_CRITERIO;
     }
 
-    @Override
-    public Boolean atendeCriterio(Familia familia) {
+    private Boolean atendeCriterio(Familia familia) {
         return familia.quantidadeDeDependentes() >= QUANTIDADE_MINIMA_DEPENDENTES &&
                 familia.quantidadeDeDependentes() <= QUANTIDADE_MAXIMA_DEPENDENTES;
     }
