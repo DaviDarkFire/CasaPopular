@@ -25,7 +25,7 @@ public class RankeiaFamiliasConcreto implements RankeiaFamilias{
     @Override
     public ProcessoDeSelecao executar(Integer quantidadeDeFamilias) {
         List<Familia> todasFamilias = familiaRepository.findAll();
-
+//        list<PontuacaoDaFamilia> pontuacoes = servico()
         return null;
     }
 }

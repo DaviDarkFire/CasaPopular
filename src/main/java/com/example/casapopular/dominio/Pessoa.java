@@ -3,6 +3,8 @@ package com.example.casapopular.dominio;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 @Table(name = "Pessoa")
@@ -12,16 +14,16 @@ public class Pessoa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private Integer idade;
+    private LocalDate dataDeNascimento;
     private BigDecimal renda;
 
     public Pessoa() {
 
     }
 
-    public Pessoa(String nome, Integer idade, BigDecimal renda){
+    public Pessoa(String nome, LocalDate dataDeNascimento, BigDecimal renda){
         this.nome = nome;
-        this.idade = idade;
+        this.dataDeNascimento = dataDeNascimento;
         this.renda = renda;
     }
 
@@ -37,16 +39,16 @@ public class Pessoa {
         return renda;
     }
 
-    public Integer getIdade() {
-        return idade;
+    public LocalDate getDataDeNascimento() {
+        return dataDeNascimento;
     }
 
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public void setIdade(Integer idade) {
-        this.idade = idade;
+    public Integer getIdade() {
+        return Period.between(LocalDate.now(), dataDeNascimento).getYears();
     }
 
     public void setRenda(BigDecimal renda) {

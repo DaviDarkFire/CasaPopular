@@ -5,22 +5,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
 
 class PessoaTest {
     private String nome;
+    private LocalDate dataDeNascimento;
     private Integer idade;
     private BigDecimal renda;
 
     @BeforeEach
     void setUp() {
         nome = "Vicente";
-        idade = 56;
+        dataDeNascimento = LocalDate.of(1996, 11, 28);
+        idade = Period.between(LocalDate.now(), dataDeNascimento).getYears();
         renda = BigDecimal.valueOf(3000);
     }
 
     @Test
     void deveCriarPessoa() {
-        Pessoa pessoa = new Pessoa(nome, idade, renda);
+        Pessoa pessoa = new Pessoa(nome, dataDeNascimento, renda);
 
         Assertions.assertThat(pessoa.getIdade()).isEqualTo(idade);
         Assertions.assertThat(pessoa.getNome()).isEqualTo(nome);
@@ -29,17 +33,14 @@ class PessoaTest {
 
     @Test
     void deveSerPossivelAlterarOsDadosDePessoa() {
-        Pessoa pessoa = new Pessoa(nome, idade, renda);
+        Pessoa pessoa = new Pessoa(nome, dataDeNascimento, renda);
         String novoNome = "Jão";
-        Integer novaIdade = 23;
         BigDecimal novaRenda = BigDecimal.valueOf(7000);
 
         pessoa.setNome(novoNome);
-        pessoa.setIdade(novaIdade);
         pessoa.setRenda(novaRenda);
 
         Assertions.assertThat(pessoa.getNome()).isEqualTo(novoNome);
-        Assertions.assertThat(pessoa.getIdade()).isEqualTo(novaIdade);
         Assertions.assertThat(pessoa.getRenda()).isEqualTo(novaRenda);
     }
 }
