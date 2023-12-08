@@ -26,7 +26,10 @@ public class Familia {
     }
 
     public BigDecimal renda() {
-        return pessoas.stream().map(Pessoa::getRenda).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return pessoas.stream()
+                .filter(pessoa -> pessoa.getIdade() >= IDADE_MINIMA_PARA_CONSIDERAR_DEPENDENTE)
+                .map(Pessoa::getRenda)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Long quantidadeDeDependentes() {

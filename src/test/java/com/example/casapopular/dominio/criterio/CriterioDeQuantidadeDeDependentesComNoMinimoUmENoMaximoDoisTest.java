@@ -1,8 +1,8 @@
 package com.example.casapopular.dominio.criterio;
 
-import com.example.casapopular.TestUtils;
 import com.example.casapopular.dominio.Familia;
 import com.example.casapopular.dominio.Pessoa;
+import com.example.casapopular.dominio.builder.PessoaBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Collections;
 
-class CriterioDeQuantidadeDeDependentesComNoMinimoUmENoMaximoDoisTest extends TestUtils {
+class CriterioDeQuantidadeDeDependentesComNoMinimoUmENoMaximoDoisTest {
     private Criterio criterio;
 
     @BeforeEach
@@ -20,9 +20,9 @@ class CriterioDeQuantidadeDeDependentesComNoMinimoUmENoMaximoDoisTest extends Te
 
     @Test
     void deveRetornarPontuacaoDoCriterioCasoFamiliaAtendaCriterioTendoOMaximoDeDependentes() {
-        Pessoa pessoa = criarPessoa(34, 900);
-        Pessoa primeiroDependente = criarPessoa(17, 0);
-        Pessoa segundoDependente = criarPessoa(12, 0);
+        Pessoa pessoa = new PessoaBuilder().comIdade(34).comRenda(900).criar();
+        Pessoa primeiroDependente = new PessoaBuilder().comIdade(17).criar();
+        Pessoa segundoDependente = new PessoaBuilder().comIdade(17).criar();
         Familia familia = new Familia(Arrays.asList(pessoa, primeiroDependente, segundoDependente));
 
         Integer pontuacao = criterio.pontuacao(familia);
@@ -32,8 +32,8 @@ class CriterioDeQuantidadeDeDependentesComNoMinimoUmENoMaximoDoisTest extends Te
 
     @Test
     void deveRetornarPontuacaoDoCriterioCasoFamiliaAtendaCriterioTendoOMinimoDeDependentes() {
-        Pessoa pessoa = criarPessoa(34, 900);
-        Pessoa primeiroDependente = criarPessoa(17, 0);
+        Pessoa pessoa = new PessoaBuilder().comIdade(34).comRenda(900).criar();
+        Pessoa primeiroDependente = new PessoaBuilder().comIdade(17).criar();
         Familia familia = new Familia(Arrays.asList(pessoa, primeiroDependente));
 
         Integer pontuacao = criterio.pontuacao(familia);
@@ -43,10 +43,10 @@ class CriterioDeQuantidadeDeDependentesComNoMinimoUmENoMaximoDoisTest extends Te
 
     @Test
     void deveRetornarPontuacaoZeroCasoFamiliaNaoAtendaCriterioComMaisDependentesDoQueOMaximoDoCriterio() {
-        Pessoa pessoa = criarPessoa(34, 900);
-        Pessoa primeiroDependente = criarPessoa(17, 0);
-        Pessoa segundoDependente = criarPessoa(12, 0);
-        Pessoa terceiroDependente = criarPessoa(12, 0);
+        Pessoa pessoa = new PessoaBuilder().comIdade(34).comRenda(900).criar();
+        Pessoa primeiroDependente = new PessoaBuilder().comIdade(17).criar();
+        Pessoa segundoDependente = new PessoaBuilder().comIdade(12).criar();
+        Pessoa terceiroDependente = new PessoaBuilder().comIdade(12).criar();
         Familia familia = new Familia(Arrays.asList(pessoa, primeiroDependente, segundoDependente, terceiroDependente));
 
         Integer pontuacao = criterio.pontuacao(familia);
@@ -56,7 +56,7 @@ class CriterioDeQuantidadeDeDependentesComNoMinimoUmENoMaximoDoisTest extends Te
 
     @Test
     void deveRetornarPontuacaoZeroCasoFamiliaNaoAtendaCriterioComMenosDependentesDoQueOMinimoDoCriterio() {
-        Pessoa pessoa = criarPessoa(34, 900);
+        Pessoa pessoa = new PessoaBuilder().comIdade(34).comRenda(900).criar();
         Familia familia = new Familia(Collections.singletonList(pessoa));
 
         Integer pontuacao = criterio.pontuacao(familia);

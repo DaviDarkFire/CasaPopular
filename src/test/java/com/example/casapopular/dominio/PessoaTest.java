@@ -18,7 +18,7 @@ class PessoaTest {
     void setUp() {
         nome = "Vicente";
         dataDeNascimento = LocalDate.of(1996, 11, 28);
-        idade = Period.between(LocalDate.now(), dataDeNascimento).getYears();
+        idade = Period.between(dataDeNascimento, LocalDate.now()).getYears();
         renda = BigDecimal.valueOf(3000);
     }
 

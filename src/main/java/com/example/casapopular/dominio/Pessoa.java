@@ -48,7 +48,7 @@ public class Pessoa {
     }
 
     public Integer getIdade() {
-        return Period.between(LocalDate.now(), dataDeNascimento).getYears();
+        return Period.between(dataDeNascimento, LocalDate.now()).getYears();
     }
 
     public void setRenda(BigDecimal renda) {

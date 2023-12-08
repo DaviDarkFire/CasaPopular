@@ -1,15 +1,15 @@
 package com.example.casapopular.dominio.criterio;
 
-import com.example.casapopular.TestUtils;
 import com.example.casapopular.dominio.Familia;
 import com.example.casapopular.dominio.Pessoa;
+import com.example.casapopular.dominio.builder.PessoaBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-class CriterioDeQuantidadeDeDependentesMaiorIgualATresTest extends TestUtils {
+class CriterioDeQuantidadeDeDependentesMaiorIgualATresTest {
 
     private Criterio criterio;
 
@@ -20,11 +20,11 @@ class CriterioDeQuantidadeDeDependentesMaiorIgualATresTest extends TestUtils {
 
     @Test
     void deveRetornarPontuacaoDoCriterioCasoFamiliaAtendaCriterio() {
-        Pessoa pessoa = criarPessoa(34, 900);
-        Pessoa primeiroDependente = criarPessoa(17, 0);
-        Pessoa segundoDependente = criarPessoa(12, 0);
-        Pessoa terceiroDependente = criarPessoa(12, 0);
-        Pessoa quartoDependente = criarPessoa(9, 0);
+        Pessoa pessoa = new PessoaBuilder().comIdade(34).comRenda(900).criar();
+        Pessoa primeiroDependente = new PessoaBuilder().comIdade(17).criar();
+        Pessoa segundoDependente = new PessoaBuilder().comIdade(12).criar();
+        Pessoa terceiroDependente = new PessoaBuilder().comIdade(12).criar();
+        Pessoa quartoDependente = new PessoaBuilder().comIdade(9).criar();
         Familia familia = new Familia(Arrays.asList(pessoa, primeiroDependente, segundoDependente, terceiroDependente, quartoDependente));
 
         Integer pontuacao = criterio.pontuacao(familia);
@@ -34,10 +34,10 @@ class CriterioDeQuantidadeDeDependentesMaiorIgualATresTest extends TestUtils {
 
     @Test
     void deveRetornarPontuacaoDoCriterioCasoFamiliaAtendaCriterioTendoOMinimoDeDependentesDoCriterio() {
-        Pessoa pessoa = criarPessoa(34, 900);
-        Pessoa primeiroDependente = criarPessoa(17, 0);
-        Pessoa segundoDependente = criarPessoa(12, 0);
-        Pessoa terceiroDependente = criarPessoa(12, 0);
+        Pessoa pessoa = new PessoaBuilder().comIdade(34).comRenda(900).criar();
+        Pessoa primeiroDependente = new PessoaBuilder().comIdade(17).criar();
+        Pessoa segundoDependente = new PessoaBuilder().comIdade(12).criar();
+        Pessoa terceiroDependente = new PessoaBuilder().comIdade(12).criar();
         Familia familia = new Familia(Arrays.asList(pessoa, primeiroDependente, segundoDependente, terceiroDependente));
 
         Integer pontuacao = criterio.pontuacao(familia);
@@ -47,9 +47,9 @@ class CriterioDeQuantidadeDeDependentesMaiorIgualATresTest extends TestUtils {
 
     @Test
     void deveRetornarPontuacaoZeroCasoFamiliaNaoAtendaCriterio() {
-        Pessoa pessoa = criarPessoa(34, 900);
-        Pessoa primeiroDependente = criarPessoa(17, 0);
-        Pessoa segundoDependente = criarPessoa(12, 0);
+        Pessoa pessoa = new PessoaBuilder().comIdade(34).comRenda(900).criar();
+        Pessoa primeiroDependente = new PessoaBuilder().comIdade(17).criar();
+        Pessoa segundoDependente = new PessoaBuilder().comIdade(12).criar();
         Familia familia = new Familia(Arrays.asList(pessoa, primeiroDependente, segundoDependente));
 
         Integer pontuacao = criterio.pontuacao(familia);

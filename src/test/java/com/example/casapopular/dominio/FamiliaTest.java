@@ -1,6 +1,6 @@
 package com.example.casapopular.dominio;
 
-import com.example.casapopular.TestUtils;
+import com.example.casapopular.dominio.builder.PessoaBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -8,13 +8,13 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-class FamiliaTest extends TestUtils {
+class FamiliaTest {
 
     @Test
     void deveCriarFamilia() {
-        Pessoa pai = criarPessoa(51, 3000);
-        Pessoa mae = criarPessoa(51, 3000);
-        Pessoa filho = criarPessoa(17, 0);
+        Pessoa pai = new PessoaBuilder().comIdade(51).comRenda(3000).criar();
+        Pessoa mae = new PessoaBuilder().comIdade(51).comRenda(3000).criar();
+        Pessoa filho = new PessoaBuilder().comIdade(17).criar();
         List<Pessoa> pessoas = Arrays.asList(pai, mae, filho);
 
         Familia familia = new Familia(pessoas);
@@ -24,9 +24,9 @@ class FamiliaTest extends TestUtils {
 
     @Test
     void deveCalcularRendaDaFamilia() {
-        Pessoa pai = criarPessoa(51, 3000);
-        Pessoa mae = criarPessoa(51, 3000);
-        Pessoa filho = criarPessoa(17, 0);
+        Pessoa pai = new PessoaBuilder().comIdade(51).comRenda(3000).criar();
+        Pessoa mae = new PessoaBuilder().comIdade(51).comRenda(3000).criar();
+        Pessoa filho = new PessoaBuilder().comIdade(17).criar();
         Familia familia = new Familia(Arrays.asList(pai, mae, filho));
 
         BigDecimal renda = familia.renda();
@@ -36,11 +36,11 @@ class FamiliaTest extends TestUtils {
 
     @Test
     void deveRetornarQuantidadeDeDependentesDaFamilia() {
-        Pessoa pai = criarPessoa(51, 3000);
-        Pessoa mae = criarPessoa(51, 3000);
-        Pessoa primeiroDePendente = criarPessoa(17, 0);
-        Pessoa segundoDePendente = criarPessoa(10, 0);
-        Pessoa terceiroDePendente = criarPessoa(2, 0);
+        Pessoa pai = new PessoaBuilder().comIdade(51).comRenda(3000).criar();
+        Pessoa mae = new PessoaBuilder().comIdade(51).comRenda(3000).criar();
+        Pessoa primeiroDePendente = new PessoaBuilder().comIdade(17).criar();
+        Pessoa segundoDePendente = new PessoaBuilder().comIdade(10).criar();
+        Pessoa terceiroDePendente = new PessoaBuilder().comIdade(2).criar();
         Familia familia = new Familia(Arrays.asList(pai, mae, primeiroDePendente, segundoDePendente, terceiroDePendente));
 
         Long quantidadeDeDependentes = familia.quantidadeDeDependentes();
