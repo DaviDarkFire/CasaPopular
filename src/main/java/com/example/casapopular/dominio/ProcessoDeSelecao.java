@@ -11,16 +11,21 @@ public class ProcessoDeSelecao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
+    @ElementCollection
     private List<FamiliaSelecionada> familiasSelecionadas;
 
     private LocalDateTime dataDeSelecao;
 
-    public ProcessoDeSelecao() {
+    private ProcessoDeSelecao() {
     }
 
     public ProcessoDeSelecao(List<FamiliaSelecionada> familiasSelecionadas) {
         this.familiasSelecionadas = familiasSelecionadas;
         this.dataDeSelecao = LocalDateTime.now();
     }
+
+    public List<FamiliaSelecionada> getFamiliasSelecionadas() {
+        return familiasSelecionadas;
+    }
+
 }

@@ -39,4 +39,8 @@ public class Familia {
     public List<Pessoa> getPessoas() {
         return pessoas;
     }
+
+    public Long getId() {
+        return id;
+    }
 }
