@@ -1,11 +1,9 @@
 package com.example.casapopular.dominio.servicos;
 
-import com.example.casapopular.TesteUtils;
 import com.example.casapopular.dominio.Familia;
 import com.example.casapopular.dominio.FamiliaSelecionada;
 import com.example.casapopular.dominio.ProcessoDeSelecao;
 import com.example.casapopular.dominio.builder.FamiliaBuilder;
-import com.example.casapopular.dominio.builder.PessoaBuilder;
 import com.example.casapopular.dominio.criterio.Criterio;
 import com.example.casapopular.dominio.criterio.CriterioDeRendaTotalAteNovecentosReais;
 import org.assertj.core.api.Assertions;
