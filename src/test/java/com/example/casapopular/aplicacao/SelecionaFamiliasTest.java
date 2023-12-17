@@ -5,7 +5,16 @@ import org.junit.jupiter.api.Test;
 class SelecionaFamiliasTest {
 
     @Test
-    void deveSelecionarAQuantidadeDeFamiliasInformadaBaseadoNaPontuacao() {
+    void deveSalvarProcessoDeSelecao() {
+
+    }
+
+    @Test
+    void deveLancarExcecaoCasoSejaInformadaUmaQuantidadeInvalidaDeFamiliasASeremSelecionadas() {
+    }
+
+    @Test
+    void deveMapearCorretamenteOsDadosDeRetorno() {
 
     }
 }

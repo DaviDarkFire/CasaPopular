@@ -34,28 +34,10 @@ class ServicoParaSelecionarFamiliasTest {
 
     @Test
     void devePontuarFamiliasEmOrdemCrescentePorPontuacao() {
-        Familia familiaComRendaAteNovecentosReais = new FamiliaBuilder()
-                .comPessoas(new PessoaBuilder().comRenda(900).criar())
-                .criar();
-        TesteUtils.alterarCampoPorReflection("id", Familia.class, familiaComRendaAteNovecentosReais, 1L);
-        Familia familiaComRendaAteMilEQuinhetosReais = new FamiliaBuilder()
-                .comPessoas(new PessoaBuilder().comRenda(1500).criar())
-                .criar();
-        TesteUtils.alterarCampoPorReflection("id", Familia.class, familiaComRendaAteMilEQuinhetosReais, 2L);
-        Familia familiaComMaisDeTresDependentes = new FamiliaBuilder()
-                .comPessoas(new PessoaBuilder().comIdade(10).criar(),
-                        new PessoaBuilder().comIdade(11).criar(),
-                        new PessoaBuilder().comIdade(12).criar(),
-                        new PessoaBuilder().comIdade(13).criar(),
-                        new PessoaBuilder().comIdade(18).criar())
-                .criar();
-        TesteUtils.alterarCampoPorReflection("id", Familia.class, familiaComMaisDeTresDependentes, 3L);
-        Familia familiaQuePossuiDeUmADoisDependentes = new FamiliaBuilder()
-                .comPessoas(new PessoaBuilder().comIdade(10).criar(),
-                        new PessoaBuilder().comIdade(11).criar(),
-                        new PessoaBuilder().comIdade(18).criar())
-                .criar();
-        TesteUtils.alterarCampoPorReflection("id", Familia.class, familiaQuePossuiDeUmADoisDependentes, 4L);
+        Familia familiaComRendaAteNovecentosReais = new FamiliaBuilder().familiaComRendaAteNovecentosReais().criar();
+        Familia familiaComRendaAteMilEQuinhetosReais = new FamiliaBuilder().familiaComRendaAteMilEQuinhentosReais().criar();
+        Familia familiaComMaisDeTresDependentes = new FamiliaBuilder().familiaComMaisDeTresDependentes().criar();
+        Familia familiaQuePossuiDeUmADoisDependentes = new FamiliaBuilder().familiaComUmOuDoisDependentes().criar();
         List<Familia> familias = Arrays.asList(familiaComRendaAteNovecentosReais,
                 familiaComRendaAteMilEQuinhetosReais,
                 familiaComMaisDeTresDependentes,
@@ -71,11 +53,8 @@ class ServicoParaSelecionarFamiliasTest {
     }
 
     @Test
-    void devePontuarApenasUmFamilia() {
-        Familia familiaComRendaAteNovecentosReais = new FamiliaBuilder()
-                .comPessoas(new PessoaBuilder().comRenda(900).criar())
-                .criar();
-        TesteUtils.alterarCampoPorReflection("id", Familia.class, familiaComRendaAteNovecentosReais, 1L);
+    void deveRetornarProcessoDeSelecaoComApenasUmFamiliaCasoHajaApenasUmFamilia() {
+        Familia familiaComRendaAteNovecentosReais = new FamiliaBuilder().familiaComRendaAteNovecentosReais().criar();
         List<Familia> familias = Collections.singletonList(familiaComRendaAteNovecentosReais);
         Long idEsperadoDaFamilia = familias.get(0).getId();
         int pontuacaoEsperada = 5;
@@ -92,10 +71,7 @@ class ServicoParaSelecionarFamiliasTest {
 
     @Test
     void deveRetornarProcessoDeSelecaoComFamiliasSelecionadasAPartirDeApenasUmCriterio() {
-        Familia familiaComRendaAteNovecentosReais = new FamiliaBuilder()
-                .comPessoas(new PessoaBuilder().comRenda(900).criar())
-                .criar();
-        TesteUtils.alterarCampoPorReflection("id", Familia.class, familiaComRendaAteNovecentosReais, 1L);
+        Familia familiaComRendaAteNovecentosReais = new FamiliaBuilder().familiaComRendaAteNovecentosReais().criar();
         List<Familia> familias = Collections.singletonList(familiaComRendaAteNovecentosReais);
         Long idEsperadoDaFamilia = familias.get(0).getId();
         criterios = Collections.singletonList(new CriterioDeRendaTotalAteNovecentosReais());
@@ -120,14 +96,8 @@ class ServicoParaSelecionarFamiliasTest {
 
     @Test
     void deveRetornarUmProcessoDeSelecaoComUmaListaDeFamiliasSelecionadasComPontuacaoZeradaCasoNaoSejamInformadosCriterios() {
-        Familia familiaComRendaAteNovecentosReais = new FamiliaBuilder()
-                .comPessoas(new PessoaBuilder().comRenda(900).criar())
-                .criar();
-        TesteUtils.alterarCampoPorReflection("id", Familia.class, familiaComRendaAteNovecentosReais, 1L);
-        Familia familiaComRendaAteMilEQuinhetosReais = new FamiliaBuilder()
-                .comPessoas(new PessoaBuilder().comRenda(1500).criar())
-                .criar();
-        TesteUtils.alterarCampoPorReflection("id", Familia.class, familiaComRendaAteMilEQuinhetosReais, 2L);
+        Familia familiaComRendaAteNovecentosReais = new FamiliaBuilder().familiaComRendaAteNovecentosReais().criar();
+        Familia familiaComRendaAteMilEQuinhetosReais = new FamiliaBuilder().familiaComRendaAteMilEQuinhentosReais().criar();
         List<Familia> familias = Arrays.asList(familiaComRendaAteNovecentosReais, familiaComRendaAteMilEQuinhetosReais);
         criterios = Collections.emptyList();
         List<Long> idsEsperadosDasFamilas = familias.stream().map(Familia::getId).collect(Collectors.toList());
@@ -140,6 +110,26 @@ class ServicoParaSelecionarFamiliasTest {
                 .containsExactlyElementsOf(idsEsperadosDasFamilas);
         Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getPontuacao)
                 .containsOnly(valorEsperado);
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas().size()).isEqualTo(quantidadeEsperadaDeFamilias);
+    }
+
+    @Test
+    void deveSelecionarSomenteAQuantidadeDeFamiliasInformadaBaseadoNaPontuacao() {
+        Familia familiaComRendaAteNovecentosReais = new FamiliaBuilder().familiaComRendaAteNovecentosReais().criar();
+        Familia familiaComRendaAteMilEQuinhetosReais = new FamiliaBuilder().familiaComRendaAteMilEQuinhentosReais().criar();
+        Familia familiaComMaisDeTresDependentes = new FamiliaBuilder().familiaComMaisDeTresDependentes().criar();
+        Familia familiaQuePossuiDeUmADoisDependentes = new FamiliaBuilder().familiaComUmOuDoisDependentes().criar();
+        List<Familia> familias = Arrays.asList(familiaComRendaAteNovecentosReais,
+                familiaComRendaAteMilEQuinhetosReais,
+                familiaComMaisDeTresDependentes,
+                familiaQuePossuiDeUmADoisDependentes);
+        Integer quantidadeEsperadaDeFamilias = 2;
+        List<Long> idsEsperadosDasFamilas = familias.stream().map(Familia::getId).limit(quantidadeEsperadaDeFamilias).collect(Collectors.toList());
+
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, criterios, quantidadeEsperadaDeFamilias);
+
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
+                .containsExactlyElementsOf(idsEsperadosDasFamilas);
         Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas().size()).isEqualTo(quantidadeEsperadaDeFamilias);
     }
 }

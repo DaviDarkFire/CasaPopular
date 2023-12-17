@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,11 +33,18 @@ public class SelecionaFamiliasConcreto implements SelecionaFamilias {
     }
 
     @Override
-    public ProcessoDeSelecaoDTO executar(Integer quantidadeDeFamilias) {
+    public ProcessoDeSelecaoDTO executar(Integer quantidadeDeFamilias) throws Exception {
+        validarQuantidadeDeFamilias(quantidadeDeFamilias);
         List<Familia> todasFamilias = familiaRepositorio.findAll();
         ProcessoDeSelecao processoDeSelecao = servicoParaSelecionarFamilias.selecionar(todasFamilias, criterios, quantidadeDeFamilias);
         processoDeSelecaoRepositorio.saveAndFlush(processoDeSelecao);
         return mapearProcessoDeSelecao(processoDeSelecao);
+    }
+
+    private void validarQuantidadeDeFamilias(Integer quantidadeDeFamilias) throws Exception {
+        if (Objects.isNull(quantidadeDeFamilias) || quantidadeDeFamilias < 0) {
+            throw new Exception("Quantidade de famílias informadas inválida.");
+        }
     }
 
     private ProcessoDeSelecaoDTO mapearProcessoDeSelecao(ProcessoDeSelecao processoDeSelecao) {
@@ -55,6 +63,4 @@ public class SelecionaFamiliasConcreto implements SelecionaFamilias {
             return familiaSelecionadaDTO;
         }).collect(Collectors.toList());
     }
-
-
 }
