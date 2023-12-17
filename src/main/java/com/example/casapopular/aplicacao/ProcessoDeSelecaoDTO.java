@@ -6,5 +6,5 @@ import java.util.List;
 public class ProcessoDeSelecaoDTO {
     public Long id;
     public LocalDateTime dataDeSelecao;
-    public List<FamiliaDTO> familias;
+    public List<FamiliaSelecionadaDTO> familias;
 }

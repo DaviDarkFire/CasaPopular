@@ -28,4 +28,11 @@ public class ProcessoDeSelecao {
         return familiasSelecionadas;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDateTime getDataDeSelecao() {
+        return dataDeSelecao;
+    }
 }

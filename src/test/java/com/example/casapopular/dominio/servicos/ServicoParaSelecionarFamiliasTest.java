@@ -3,6 +3,7 @@ package com.example.casapopular.dominio.servicos;
 import com.example.casapopular.TesteUtils;
 import com.example.casapopular.dominio.Familia;
 import com.example.casapopular.dominio.FamiliaSelecionada;
+import com.example.casapopular.dominio.ProcessoDeSelecao;
 import com.example.casapopular.dominio.builder.FamiliaBuilder;
 import com.example.casapopular.dominio.builder.PessoaBuilder;
 import com.example.casapopular.dominio.criterio.Criterio;
@@ -19,16 +20,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @SpringBootTest
-class ServicoParaPontuarFamiliasTest {
+class ServicoParaSelecionarFamiliasTest {
 
     @Autowired
     private List<Criterio> criterios;
 
-    private ServicoParaPontuarFamilias servico;
+    private ServicoParaSelecionarFamilias servico;
 
     @BeforeEach
     void setUp() {
-        servico = new ServicoParaPontuarFamilias();
+        servico = new ServicoParaSelecionarFamilias();
     }
 
     @Test
@@ -60,11 +61,13 @@ class ServicoParaPontuarFamiliasTest {
                 familiaComMaisDeTresDependentes,
                 familiaQuePossuiDeUmADoisDependentes);
         List<Long> idsEsperadosDasFamilas = familias.stream().map(Familia::getId).collect(Collectors.toList());
+        Integer quantidadeEsperadaDeFamilias = 4;
 
-        List<FamiliaSelecionada> familiasSelecionadas = servico.pontuar(familias, criterios);
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, criterios, quantidadeEsperadaDeFamilias);
 
-        Assertions.assertThat(familiasSelecionadas).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
                 .containsExactlyElementsOf(idsEsperadosDasFamilas);
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas().size()).isEqualTo(quantidadeEsperadaDeFamilias);
     }
 
     @Test
@@ -76,17 +79,19 @@ class ServicoParaPontuarFamiliasTest {
         List<Familia> familias = Collections.singletonList(familiaComRendaAteNovecentosReais);
         Long idEsperadoDaFamilia = familias.get(0).getId();
         int pontuacaoEsperada = 5;
+        Integer quantidadeEsperadaDeFamilias = 1;
 
-        List<FamiliaSelecionada> familiasSelecionadas = servico.pontuar(familias, criterios);
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, criterios, quantidadeEsperadaDeFamilias);
 
-        Assertions.assertThat(familiasSelecionadas).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
                 .containsOnly(idEsperadoDaFamilia);
-        Assertions.assertThat(familiasSelecionadas).extracting(FamiliaSelecionada::getPontuacao)
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getPontuacao)
                 .containsOnly(pontuacaoEsperada);
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas().size()).isEqualTo(quantidadeEsperadaDeFamilias);
     }
 
     @Test
-    void devePontuarFamiliasComApenasUmCriterio() {
+    void deveRetornarProcessoDeSelecaoComFamiliasSelecionadasAPartirDeApenasUmCriterio() {
         Familia familiaComRendaAteNovecentosReais = new FamiliaBuilder()
                 .comPessoas(new PessoaBuilder().comRenda(900).criar())
                 .criar();
@@ -95,20 +100,22 @@ class ServicoParaPontuarFamiliasTest {
         Long idEsperadoDaFamilia = familias.get(0).getId();
         criterios = Collections.singletonList(new CriterioDeRendaTotalAteNovecentosReais());
         int pontuacaoEsperada = 5;
+        Integer quantidadeEsperadaDeFamilias = 1;
 
-        List<FamiliaSelecionada> familiasSelecionadas = servico.pontuar(familias, criterios);
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, criterios, 1);
 
-        Assertions.assertThat(familiasSelecionadas).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
                 .containsOnly(idEsperadoDaFamilia);
-        Assertions.assertThat(familiasSelecionadas).extracting(FamiliaSelecionada::getPontuacao)
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getPontuacao)
                 .containsOnly(pontuacaoEsperada);
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas().size()).isEqualTo(quantidadeEsperadaDeFamilias);
     }
 
     @Test
     void deveRetornarUmProcessoDeSelecaoComUmaListaDeFamiliasSelecionadasVaziaCasoNaoSejamInformadasFamilias() {
-        List<FamiliaSelecionada> familiasSelecionadas = servico.pontuar(Collections.emptyList(), criterios);
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(Collections.emptyList(), criterios, 10);
 
-        Assertions.assertThat(familiasSelecionadas).isEmpty();
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).isEmpty();
     }
 
     @Test
@@ -125,12 +132,14 @@ class ServicoParaPontuarFamiliasTest {
         criterios = Collections.emptyList();
         List<Long> idsEsperadosDasFamilas = familias.stream().map(Familia::getId).collect(Collectors.toList());
         int valorEsperado = 0;
+        Integer quantidadeEsperadaDeFamilias = 2;
 
-        List<FamiliaSelecionada> familiasSelecionadas = servico.pontuar(familias, criterios);
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, criterios,quantidadeEsperadaDeFamilias);
 
-        Assertions.assertThat(familiasSelecionadas).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
                 .containsExactlyElementsOf(idsEsperadosDasFamilas);
-        Assertions.assertThat(familiasSelecionadas).extracting(FamiliaSelecionada::getPontuacao)
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getPontuacao)
                 .containsOnly(valorEsperado);
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas().size()).isEqualTo(quantidadeEsperadaDeFamilias);
     }
 }

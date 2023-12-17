@@ -1,6 +1,6 @@
 package com.example.casapopular.aplicacao;
 
-public class FamiliaDTO {
+public class FamiliaSelecionadaDTO {
     public Long id;
     public Integer pontuacao;
 }
