@@ -102,7 +102,7 @@ class ServicoParaSelecionarFamiliasTest {
         int valorEsperado = 0;
         Integer quantidadeEsperadaDeFamilias = 2;
 
-        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, criterios,quantidadeEsperadaDeFamilias);
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, criterios, quantidadeEsperadaDeFamilias);
 
         Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
                 .containsExactlyElementsOf(idsEsperadosDasFamilas);
@@ -129,5 +129,25 @@ class ServicoParaSelecionarFamiliasTest {
         Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
                 .containsExactlyElementsOf(idsEsperadosDasFamilas);
         Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas().size()).isEqualTo(quantidadeEsperadaDeFamilias);
+    }
+
+    @Test
+    void deveRetornarProcessoDeSelecaoComTodasAsFamiliasOrdenadasPorPontuacaoCasoAQuantidadeDeFamiliasSolicitadasSejaMaiorQueOTotalDeFamiliasExistentes() {
+        Familia familiaComRendaAteNovecentosReais = new FamiliaBuilder().familiaComRendaAteNovecentosReais().criar();
+        Familia familiaComRendaAteMilEQuinhetosReais = new FamiliaBuilder().familiaComRendaAteMilEQuinhentosReais().criar();
+        Familia familiaComMaisDeTresDependentes = new FamiliaBuilder().familiaComMaisDeTresDependentes().criar();
+        Familia familiaQuePossuiDeUmADoisDependentes = new FamiliaBuilder().familiaComUmOuDoisDependentes().criar();
+        List<Familia> familias = Arrays.asList(familiaComRendaAteNovecentosReais,
+                familiaComRendaAteMilEQuinhetosReais,
+                familiaComMaisDeTresDependentes,
+                familiaQuePossuiDeUmADoisDependentes);
+        Integer quantidadeEsperadaDeFamiliasMaiorQueQuantidadeDeFamiliasExistentes = 5;
+        List<Long> idsEsperadosDasFamilas = familias.stream().map(Familia::getId).limit(quantidadeEsperadaDeFamiliasMaiorQueQuantidadeDeFamiliasExistentes)
+                .collect(Collectors.toList());
+
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, criterios, quantidadeEsperadaDeFamiliasMaiorQueQuantidadeDeFamiliasExistentes);
+
+        Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
+                .containsExactlyElementsOf(idsEsperadosDasFamilas);
     }
 }

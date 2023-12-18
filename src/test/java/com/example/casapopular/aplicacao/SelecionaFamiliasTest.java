@@ -1,7 +1,6 @@
 package com.example.casapopular.aplicacao;
 
 import com.example.casapopular.dominio.Familia;
-import com.example.casapopular.dominio.FamiliaSelecionada;
 import com.example.casapopular.dominio.ProcessoDeSelecao;
 import com.example.casapopular.dominio.builder.FamiliaBuilder;
 import com.example.casapopular.dominio.repositorio.FamiliaRepositorio;
@@ -65,11 +64,36 @@ class SelecionaFamiliasTest {
     }
 
     @Test
-    void deveLancarExcecaoCasoSejaInformadaUmaQuantidadeInvalidaDeFamiliasASeremSelecionadas() {
+    void deveLancarExcecaoCasoSejaInformadaUmaQuantidadeNulaDeFamiliasASeremSelecionadas() {
+        Throwable excecao = Assertions.catchThrowable(() -> selecionaFamilias.executar(null));
+
+        Assertions.assertThat(excecao).isInstanceOf(Exception.class).hasMessageContaining(SelecionaFamiliasConcreto.MENSAGEM_ESPERADA_PARA_QUANTIDADE_DE_FAMILIAS_INVALIDA);
     }
 
     @Test
-    void deveMapearCorretamenteOsDadosDeRetorno() {
+    void deveLancarExcecaoCasoSejaInformadaUmaQuantidadeNegativaDeFamiliasASeremSelecionadas() {
+        Throwable excecao = Assertions.catchThrowable(() -> selecionaFamilias.executar(-1));
 
+        Assertions.assertThat(excecao).isInstanceOf(Exception.class).hasMessageContaining(SelecionaFamiliasConcreto.MENSAGEM_ESPERADA_PARA_QUANTIDADE_DE_FAMILIAS_INVALIDA);
+    }
+
+    @Test
+    void deveMapearCorretamenteOsDadosDeRetorno() throws Exception {
+        Familia primeiraFamilia = new FamiliaBuilder().familiaComMaisDeTresDependentes().criar();
+        List<Familia> familias = Collections.singletonList(primeiraFamilia);
+        ArgumentCaptor<ProcessoDeSelecao> capturadorDeArgumento = ArgumentCaptor.forClass(ProcessoDeSelecao.class);
+        Mockito.when(familiaRepositorio.findAll()).thenReturn(familias);
+        Mockito.when(processoDeSelecaoRepositorio.saveAndFlush(capturadorDeArgumento.capture())).thenReturn(null);
+        Integer pontuacaoEsperadaDaFamilia = 3;
+
+        ProcessoDeSelecaoDTO processoDeSelecaoDTO = selecionaFamilias.executar(quantidadeDeFamilias);
+
+        ProcessoDeSelecao processoDeSelecao = capturadorDeArgumento.getValue();
+        Assertions.assertThat(processoDeSelecaoDTO.id).isEqualTo(processoDeSelecao.getId());
+        Assertions.assertThat(processoDeSelecaoDTO.dataDeSelecao).isEqualTo(processoDeSelecao.getDataDeSelecao());
+        Assertions.assertThat(processoDeSelecaoDTO.familias).extracting(familiaSelecionadaDTO -> familiaSelecionadaDTO.id).
+                containsExactlyElementsOf(familias.stream().map(Familia::getId).collect(Collectors.toList()));
+        Assertions.assertThat(processoDeSelecaoDTO.familias).extracting(familiaSelecionadaDTO -> familiaSelecionadaDTO.pontuacao).
+                containsExactly(pontuacaoEsperadaDaFamilia);
     }
 }

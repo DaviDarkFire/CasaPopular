@@ -20,6 +20,7 @@ public class SelecionaFamiliasConcreto implements SelecionaFamilias {
     private final FamiliaRepositorio familiaRepositorio;
     private final ServicoParaSelecionarFamilias servicoParaSelecionarFamilias;
     private final ProcessoDeSelecaoRepositorio processoDeSelecaoRepositorio;
+    protected static final String MENSAGEM_ESPERADA_PARA_QUANTIDADE_DE_FAMILIAS_INVALIDA = "Quantidade de famílias informadas inválida.";
 
     @Autowired
     public SelecionaFamiliasConcreto(List<Criterio> criterios,
@@ -43,7 +44,7 @@ public class SelecionaFamiliasConcreto implements SelecionaFamilias {
 
     private void validarQuantidadeDeFamilias(Integer quantidadeDeFamilias) throws Exception {
         if (Objects.isNull(quantidadeDeFamilias) || quantidadeDeFamilias < 0) {
-            throw new Exception("Quantidade de famílias informadas inválida.");
+            throw new Exception(MENSAGEM_ESPERADA_PARA_QUANTIDADE_DE_FAMILIAS_INVALIDA);
         }
     }
 
