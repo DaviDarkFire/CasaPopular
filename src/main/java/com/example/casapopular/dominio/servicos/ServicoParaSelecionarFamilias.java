@@ -12,6 +12,8 @@ import java.util.List;
 @Service
 public class ServicoParaSelecionarFamilias {
 
+    //TODO: injetar critérios
+
     public ProcessoDeSelecao selecionar(List<Familia> familias, List<Criterio> criterios, Integer quantidadeDeFamilias) {
         List<FamiliaSelecionada> familiasSelecionadas = familias.stream()
                 .map(familia -> {
