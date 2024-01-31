@@ -16,18 +16,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class SelecionaFamiliasConcreto implements SelecionaFamilias {
-    private final List<Criterio> criterios;
     private final FamiliaRepositorio familiaRepositorio;
     private final ServicoParaSelecionarFamilias servicoParaSelecionarFamilias;
     private final ProcessoDeSelecaoRepositorio processoDeSelecaoRepositorio;
     protected static final String MENSAGEM_ESPERADA_PARA_QUANTIDADE_DE_FAMILIAS_INVALIDA = "Quantidade de famílias informadas inválida.";
 
     @Autowired
-    public SelecionaFamiliasConcreto(List<Criterio> criterios,
-                                     FamiliaRepositorio familiaRepositorio,
+    public SelecionaFamiliasConcreto(FamiliaRepositorio familiaRepositorio,
                                      ServicoParaSelecionarFamilias servicoParaSelecionarFamilias,
                                      ProcessoDeSelecaoRepositorio processoDeSelecaoRepositorio) {
-        this.criterios = criterios;
         this.familiaRepositorio = familiaRepositorio;
         this.servicoParaSelecionarFamilias = servicoParaSelecionarFamilias;
         this.processoDeSelecaoRepositorio = processoDeSelecaoRepositorio;
@@ -37,7 +34,7 @@ public class SelecionaFamiliasConcreto implements SelecionaFamilias {
     public ProcessoDeSelecaoDTO executar(Integer quantidadeDeFamilias) throws Exception {
         validarQuantidadeDeFamilias(quantidadeDeFamilias);
         List<Familia> todasFamilias = familiaRepositorio.findAll();
-        ProcessoDeSelecao processoDeSelecao = servicoParaSelecionarFamilias.selecionar(todasFamilias, criterios, quantidadeDeFamilias);
+        ProcessoDeSelecao processoDeSelecao = servicoParaSelecionarFamilias.selecionar(todasFamilias, quantidadeDeFamilias);
         processoDeSelecaoRepositorio.saveAndFlush(processoDeSelecao);
         return mapearProcessoDeSelecao(processoDeSelecao);
     }

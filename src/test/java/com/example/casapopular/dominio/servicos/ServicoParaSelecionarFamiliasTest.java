@@ -27,7 +27,7 @@ class ServicoParaSelecionarFamiliasTest {
 
     @BeforeEach
     void setUp() {
-        servico = new ServicoParaSelecionarFamilias();
+        servico = new ServicoParaSelecionarFamilias(criterios);
     }
 
     @Test
@@ -43,7 +43,7 @@ class ServicoParaSelecionarFamiliasTest {
         List<Long> idsEsperadosDasFamilas = familias.stream().map(Familia::getId).collect(Collectors.toList());
         Integer quantidadeEsperadaDeFamilias = 4;
 
-        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, criterios, quantidadeEsperadaDeFamilias);
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, quantidadeEsperadaDeFamilias);
 
         Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
                 .containsExactlyElementsOf(idsEsperadosDasFamilas);
@@ -58,7 +58,7 @@ class ServicoParaSelecionarFamiliasTest {
         int pontuacaoEsperada = 5;
         Integer quantidadeEsperadaDeFamilias = 1;
 
-        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, criterios, quantidadeEsperadaDeFamilias);
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, quantidadeEsperadaDeFamilias);
 
         Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
                 .containsOnly(idEsperadoDaFamilia);
@@ -76,7 +76,7 @@ class ServicoParaSelecionarFamiliasTest {
         int pontuacaoEsperada = 5;
         Integer quantidadeEsperadaDeFamilias = 1;
 
-        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, criterios, 1);
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, 1);
 
         Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
                 .containsOnly(idEsperadoDaFamilia);
@@ -87,7 +87,7 @@ class ServicoParaSelecionarFamiliasTest {
 
     @Test
     void deveRetornarUmProcessoDeSelecaoComUmaListaDeFamiliasSelecionadasVaziaCasoNaoSejamInformadasFamilias() {
-        ProcessoDeSelecao processoDeSelecao = servico.selecionar(Collections.emptyList(), criterios, 10);
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(Collections.emptyList(), 10);
 
         Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).isEmpty();
     }
@@ -98,11 +98,12 @@ class ServicoParaSelecionarFamiliasTest {
         Familia familiaComRendaAteMilEQuinhetosReais = new FamiliaBuilder().familiaComRendaAteMilEQuinhentosReais().criar();
         List<Familia> familias = Arrays.asList(familiaComRendaAteNovecentosReais, familiaComRendaAteMilEQuinhetosReais);
         criterios = Collections.emptyList();
+        servico = new ServicoParaSelecionarFamilias(criterios);
         List<Long> idsEsperadosDasFamilas = familias.stream().map(Familia::getId).collect(Collectors.toList());
         int valorEsperado = 0;
         Integer quantidadeEsperadaDeFamilias = 2;
 
-        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, criterios, quantidadeEsperadaDeFamilias);
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, quantidadeEsperadaDeFamilias);
 
         Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
                 .containsExactlyElementsOf(idsEsperadosDasFamilas);
@@ -124,7 +125,7 @@ class ServicoParaSelecionarFamiliasTest {
         Integer quantidadeEsperadaDeFamilias = 2;
         List<Long> idsEsperadosDasFamilas = familias.stream().map(Familia::getId).limit(quantidadeEsperadaDeFamilias).collect(Collectors.toList());
 
-        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, criterios, quantidadeEsperadaDeFamilias);
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, quantidadeEsperadaDeFamilias);
 
         Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
                 .containsExactlyElementsOf(idsEsperadosDasFamilas);
@@ -145,7 +146,7 @@ class ServicoParaSelecionarFamiliasTest {
         List<Long> idsEsperadosDasFamilas = familias.stream().map(Familia::getId).limit(quantidadeEsperadaDeFamiliasMaiorQueQuantidadeDeFamiliasExistentes)
                 .collect(Collectors.toList());
 
-        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, criterios, quantidadeEsperadaDeFamiliasMaiorQueQuantidadeDeFamiliasExistentes);
+        ProcessoDeSelecao processoDeSelecao = servico.selecionar(familias, quantidadeEsperadaDeFamiliasMaiorQueQuantidadeDeFamiliasExistentes);
 
         Assertions.assertThat(processoDeSelecao.getFamiliasSelecionadas()).extracting(FamiliaSelecionada::getIdDaFamiliaSelecionada)
                 .containsExactlyElementsOf(idsEsperadosDasFamilas);
