@@ -1,6 +1,4 @@
-package com.example.casapopular.aplicacao;
-
-import com.example.casapopular.dominio.ProcessoDeSelecao;
+package com.example.casapopular.aplicacao.selecao;
 
 public interface SelecionaFamilias {
     ProcessoDeSelecaoDTO executar(Integer quantidadeDeFamilias) throws Exception;

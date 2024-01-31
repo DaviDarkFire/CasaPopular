@@ -1,4 +1,4 @@
-package com.example.casapopular.aplicacao;
+package com.example.casapopular.aplicacao.selecao;
 
 import com.example.casapopular.dominio.Familia;
 import com.example.casapopular.dominio.ProcessoDeSelecao;

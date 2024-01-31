@@ -1,9 +1,8 @@
-package com.example.casapopular.aplicacao;
+package com.example.casapopular.aplicacao.selecao;
 
 import com.example.casapopular.dominio.Familia;
 import com.example.casapopular.dominio.FamiliaSelecionada;
 import com.example.casapopular.dominio.ProcessoDeSelecao;
-import com.example.casapopular.dominio.criterio.Criterio;
 import com.example.casapopular.dominio.repositorio.FamiliaRepositorio;
 import com.example.casapopular.dominio.repositorio.ProcessoDeSelecaoRepositorio;
 import com.example.casapopular.dominio.servicos.ServicoParaSelecionarFamilias;
