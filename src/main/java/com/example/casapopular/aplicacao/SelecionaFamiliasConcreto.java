@@ -49,19 +49,15 @@ public class SelecionaFamiliasConcreto implements SelecionaFamilias {
     }
 
     private ProcessoDeSelecaoDTO mapearProcessoDeSelecao(ProcessoDeSelecao processoDeSelecao) {
-        ProcessoDeSelecaoDTO processoDeSelecaoDTO = new ProcessoDeSelecaoDTO();
-        processoDeSelecaoDTO.id = processoDeSelecao.getId();
-        processoDeSelecaoDTO.dataDeSelecao = processoDeSelecao.getDataDeSelecao();
-        processoDeSelecaoDTO.familias = mapearFamiliasSelecionadas(processoDeSelecao.getFamiliasSelecionadas());
-        return processoDeSelecaoDTO;
+        return new ProcessoDeSelecaoDTO(processoDeSelecao.getId(),
+                processoDeSelecao.getDataDeSelecao(),
+                mapearFamiliasSelecionadas(processoDeSelecao.getFamiliasSelecionadas()));
     }
 
     private List<FamiliaSelecionadaDTO> mapearFamiliasSelecionadas(List<FamiliaSelecionada> familiasSelecionadas) {
-        return familiasSelecionadas.stream().map(familiaSelecionada -> {
-            FamiliaSelecionadaDTO familiaSelecionadaDTO = new FamiliaSelecionadaDTO();
-            familiaSelecionadaDTO.id = familiaSelecionada.getIdDaFamiliaSelecionada();
-            familiaSelecionadaDTO.pontuacao = familiaSelecionada.getPontuacao();
-            return familiaSelecionadaDTO;
-        }).collect(Collectors.toList());
+        return familiasSelecionadas.stream()
+                .map(familiaSelecionada ->
+                        new FamiliaSelecionadaDTO(familiaSelecionada.getIdDaFamiliaSelecionada(), familiaSelecionada.getPontuacao()))
+                .collect(Collectors.toList());
     }
 }

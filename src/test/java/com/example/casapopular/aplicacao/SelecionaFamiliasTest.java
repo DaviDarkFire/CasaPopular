@@ -45,12 +45,12 @@ class SelecionaFamiliasTest {
 
         ProcessoDeSelecaoDTO processoDeSelecaoDTO = selecionaFamilias.executar(quantidadeDeFamilias);
 
-        Assertions.assertThat(processoDeSelecaoDTO.familias).extracting(familiaSelecionadaDTO -> familiaSelecionadaDTO.id).
-                containsExactlyElementsOf(familias.stream().map(Familia::getId).collect(Collectors.toList()));
+        Assertions.assertThat(processoDeSelecaoDTO.familias()).extracting(FamiliaSelecionadaDTO::id)
+                .containsExactlyElementsOf(familias.stream().map(Familia::getId).collect(Collectors.toList()));
     }
 
     @Test
-    void deveSalvarProcessoDeSelecao() throws Exception{
+    void deveSalvarProcessoDeSelecao() throws Exception {
         Familia familia = new FamiliaBuilder().familiaComMaisDeTresDependentes().criar();
         List<Familia> familias = Collections.singletonList(familia);
         ArgumentCaptor<ProcessoDeSelecao> capturadorDeArgumento = ArgumentCaptor.forClass(ProcessoDeSelecao.class);
@@ -60,7 +60,7 @@ class SelecionaFamiliasTest {
 
         Mockito.verify(processoDeSelecaoRepositorio).saveAndFlush(capturadorDeArgumento.capture());
         ProcessoDeSelecao processoCapturado = capturadorDeArgumento.getValue();
-        Assertions.assertThat(processoCapturado.getId()).isEqualTo(processoDeSelecaoDTO.id);
+        Assertions.assertThat(processoCapturado.getId()).isEqualTo(processoDeSelecaoDTO.id());
     }
 
     @Test
@@ -89,11 +89,11 @@ class SelecionaFamiliasTest {
         ProcessoDeSelecaoDTO processoDeSelecaoDTO = selecionaFamilias.executar(quantidadeDeFamilias);
 
         ProcessoDeSelecao processoDeSelecao = capturadorDeArgumento.getValue();
-        Assertions.assertThat(processoDeSelecaoDTO.id).isEqualTo(processoDeSelecao.getId());
-        Assertions.assertThat(processoDeSelecaoDTO.dataDeSelecao).isEqualTo(processoDeSelecao.getDataDeSelecao());
-        Assertions.assertThat(processoDeSelecaoDTO.familias).extracting(familiaSelecionadaDTO -> familiaSelecionadaDTO.id).
-                containsExactlyElementsOf(familias.stream().map(Familia::getId).collect(Collectors.toList()));
-        Assertions.assertThat(processoDeSelecaoDTO.familias).extracting(familiaSelecionadaDTO -> familiaSelecionadaDTO.pontuacao).
-                containsExactly(pontuacaoEsperadaDaFamilia);
+        Assertions.assertThat(processoDeSelecaoDTO.id()).isEqualTo(processoDeSelecao.getId());
+        Assertions.assertThat(processoDeSelecaoDTO.dataDeSelecao()).isEqualTo(processoDeSelecao.getDataDeSelecao());
+        Assertions.assertThat(processoDeSelecaoDTO.familias()).extracting(FamiliaSelecionadaDTO::id)
+                .containsExactlyElementsOf(familias.stream().map(Familia::getId).collect(Collectors.toList()));
+        Assertions.assertThat(processoDeSelecaoDTO.familias()).extracting(FamiliaSelecionadaDTO::pontuacao)
+                .containsExactly(pontuacaoEsperadaDaFamilia);
     }
 }
