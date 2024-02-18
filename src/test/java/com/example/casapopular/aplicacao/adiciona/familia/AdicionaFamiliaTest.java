@@ -1,6 +1,9 @@
 package com.example.casapopular.aplicacao.adiciona.familia;
 
+import com.example.casapopular.aplicacao.selecao.PessoaDTO;
 import com.example.casapopular.dominio.Familia;
+import com.example.casapopular.dominio.Pessoa;
+import com.example.casapopular.dominio.builder.PessoaBuilder;
 import com.example.casapopular.dominio.repositorio.FamiliaRepositorio;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,9 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import javax.lang.model.util.Types;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.*;
 
 public class AdicionaFamiliaTest {
 
@@ -24,13 +25,15 @@ public class AdicionaFamiliaTest {
     }
 
     @Test
-    void deveAdicionarFamilia() {
+    void deveAdicionarFamilia() throws Exception {
+        AdicionaFamiliaComando comando = inicializarComando();
 
+        adicionaFamilia.executar(comando);
 
         ArgumentCaptor<Familia> argumentCaptor = ArgumentCaptor.forClass(Familia.class);
         Mockito.verify(familiaRepositorio).save(argumentCaptor.capture());
         Familia familiaCapturada = argumentCaptor.getValue();
-
+        Assertions.assertThat(familiaPossuiPessoas(familiaCapturada, comando.getPessoas())).isTrue();
     }
 
     @Test
@@ -41,5 +44,41 @@ public class AdicionaFamiliaTest {
     @Test
     void naoDeveAdicionarFamiliaCasoListaDePessoasNula() {
 
+    }
+
+    @Test
+    void naoDeveAdicionarFamiliaCasoComandoNulo() {
+
+    }
+
+    private AdicionaFamiliaComando inicializarComando() throws Exception {
+        List<PessoaDTO> pessoas = criarListaDePessoas();
+        return new AdicionaFamiliaComando(pessoas, Optional.empty());
+    }
+
+    private List<PessoaDTO> criarListaDePessoas() {
+        return Arrays.asList(criarPessoaDTO(), criarPessoaDTO(), criarPessoaDTO());
+    }
+
+    private PessoaDTO criarPessoaDTO() {
+        return mapearPessoa(new PessoaBuilder().criar());
+    }
+
+    private PessoaDTO mapearPessoa(Pessoa pessoa) {
+        return new PessoaDTO(pessoa.getNome(), pessoa.getDataDeNascimento(), pessoa.getRenda());
+    }
+
+    private boolean familiaPossuiPessoas(Familia familia, List<PessoaDTO> pessoasDTO) {
+        return pessoasDTO.stream().allMatch(pessoaDTO -> pessoaEstaNaFamilia(pessoaDTO, familia));
+    }
+
+    private boolean pessoaEstaNaFamilia(PessoaDTO pessoaDTO, Familia familia) {
+        return familia.getPessoas().stream().anyMatch(pessoa -> pessoasSaoIguais(pessoaDTO, pessoa));
+    }
+
+    private static boolean pessoasSaoIguais(PessoaDTO pessoaDTO, Pessoa pessoa) {
+        return Objects.equals(pessoa.getNome(), pessoaDTO.nome()) &&
+                Objects.equals(pessoa.getDataDeNascimento(), pessoaDTO.dataDeNascimento()) &&
+                Objects.equals(pessoa.getRenda(), pessoaDTO.renda());
     }
 }

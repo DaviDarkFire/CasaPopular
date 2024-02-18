@@ -5,6 +5,7 @@ import com.example.casapopular.dominio.Pessoa;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Random;
 
 public class PessoaBuilder {
     private String nome;
@@ -16,9 +17,9 @@ public class PessoaBuilder {
     }
 
     public PessoaBuilder() {
-        nome = "Joviscleisson";
-        dataDeNascimento = LocalDate.of(1996, 11, 28);
-        renda = BigDecimal.valueOf(2000);
+        nome = "Joviscleisson" + obterNumeroAleatorio(10);
+        this.comIdade(obterNumeroAleatorio(45));
+        this.comRenda(obterNumeroAleatorio(3500));
     }
 
     public PessoaBuilder comNome(String nome) {
@@ -55,5 +56,10 @@ public class PessoaBuilder {
 
     public Integer getIdade() {
         return Period.between(LocalDate.now(), dataDeNascimento).getYears();
+    }
+
+    private Integer obterNumeroAleatorio(int numero) {
+        Random random = new Random();
+        return random.nextInt(numero);
     }
 }
