@@ -9,19 +9,11 @@ import java.util.Optional;
 
 public class AdicionaFamiliaComando extends Comando {
 
-    private final static String MENSAGEM_ESPERADA_PARA_LISTA_DE_PESSOAS_INVALIDA = "Lista de pessoas inválida.";
     private List<PessoaDTO> pessoas;
 
-    protected AdicionaFamiliaComando(List<PessoaDTO> pessoas, Optional<String> usuario) throws Exception {
+    protected AdicionaFamiliaComando(List<PessoaDTO> pessoas, Optional<String> usuario) {
         super(usuario);
-        validarDados(pessoas);
         this.pessoas = pessoas;
-    }
-
-    private void validarDados(List<PessoaDTO> pessoas) throws Exception{
-        if(Objects.isNull(pessoas) || pessoas.isEmpty()) {
-            throw new Exception(MENSAGEM_ESPERADA_PARA_LISTA_DE_PESSOAS_INVALIDA);
-        }
     }
 
     public List<PessoaDTO> getPessoas() {

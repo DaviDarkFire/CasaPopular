@@ -1,5 +1,6 @@
 package com.example.casapopular.aplicacao.adiciona.familia;
 
+import com.example.casapopular.aplicacao.comum.ExcecaoDeCampoObrigatorio;
 import com.example.casapopular.aplicacao.selecao.PessoaDTO;
 import com.example.casapopular.dominio.Familia;
 import com.example.casapopular.dominio.Pessoa;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class AdicionaFamiliaConcreto implements AdicionaFamilia {
-    private static final String MENSAGEM_ESPERADA_PARA_COMANDO_INVALIDO = "Impossível adicionar família. Dados Inválidos.";
+    protected static final String MENSAGEM_ESPERADA_PARA_COMANDO_INVALIDO = "Impossível adicionar família. Dados Inválidos.";
     private final FamiliaRepositorio familiaRepositorio;
     public AdicionaFamiliaConcreto(FamiliaRepositorio familiaRepositorio) {
         this.familiaRepositorio = familiaRepositorio;
@@ -27,10 +28,10 @@ public class AdicionaFamiliaConcreto implements AdicionaFamilia {
     }
 
     private void validarInformacoes(AdicionaFamiliaComando comando) throws Exception {
-        if (Objects.isNull(comando)) {
-            throw new Exception(MENSAGEM_ESPERADA_PARA_COMANDO_INVALIDO);
-        }
-
+        new ExcecaoDeCampoObrigatorio()
+                .quandoColecaoNula(comando.getPessoas(), MENSAGEM_ESPERADA_PARA_COMANDO_INVALIDO)
+                .quandoColecaoVazia(comando.getPessoas(), MENSAGEM_ESPERADA_PARA_COMANDO_INVALIDO)
+                .lancarExcecao();
     }
 
     private List<Pessoa> mapearPessoas(List<PessoaDTO> pessoasDTO) {

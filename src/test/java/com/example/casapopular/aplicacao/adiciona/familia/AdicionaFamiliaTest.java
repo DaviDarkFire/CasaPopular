@@ -1,5 +1,6 @@
 package com.example.casapopular.aplicacao.adiciona.familia;
 
+import com.example.casapopular.aplicacao.comum.ExcecaoDeCampoObrigatorio;
 import com.example.casapopular.aplicacao.selecao.PessoaDTO;
 import com.example.casapopular.dominio.Familia;
 import com.example.casapopular.dominio.Pessoa;
@@ -38,17 +39,20 @@ public class AdicionaFamiliaTest {
 
     @Test
     void naoDeveAdicionarFamiliaCasoListaDePessoasVazia() {
+        AdicionaFamiliaComando comando = new AdicionaFamiliaComando(new ArrayList<>(), Optional.empty());
 
+        Throwable excecao = Assertions.catchThrowable(() -> adicionaFamilia.executar(comando));
+
+        Assertions.assertThat(excecao).isInstanceOf(ExcecaoDeCampoObrigatorio.class).hasMessageContaining(AdicionaFamiliaConcreto.MENSAGEM_ESPERADA_PARA_COMANDO_INVALIDO);
     }
 
     @Test
     void naoDeveAdicionarFamiliaCasoListaDePessoasNula() {
+        AdicionaFamiliaComando comando = new AdicionaFamiliaComando(null, Optional.empty());
 
-    }
+        Throwable excecao = Assertions.catchThrowable(() -> adicionaFamilia.executar(comando));
 
-    @Test
-    void naoDeveAdicionarFamiliaCasoComandoNulo() {
-
+        Assertions.assertThat(excecao).isInstanceOf(ExcecaoDeCampoObrigatorio.class).hasMessageContaining(AdicionaFamiliaConcreto.MENSAGEM_ESPERADA_PARA_COMANDO_INVALIDO);
     }
 
     private AdicionaFamiliaComando inicializarComando() throws Exception {

@@ -4,28 +4,27 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-class ExcecaoTest {
+class ExcecaoDeCampoObrigatorioTest {
 
     @Test
     void deveLancarExcecaoCasoObjetoSejaNulo() {
         String mensagemEsperada = "Objeto nulo.";
 
         Throwable excecao = Assertions.catchThrowable(() ->
-                new Excecao()
+                new ExcecaoDeCampoObrigatorio()
                         .quandoNulo(null, mensagemEsperada)
                         .lancarExcecao());
 
-        Assertions.assertThat(excecao).isInstanceOf(Exception.class).hasMessageContaining(mensagemEsperada);
+        Assertions.assertThat(excecao).isInstanceOf(ExcecaoDeCampoObrigatorio.class).hasMessageContaining(mensagemEsperada);
     }
 
     @Test
     void naoDeveLancarExcecaoCasoObjetoNaoSejaNulo() {
 
         Assertions.assertThatCode(() ->
-                new Excecao()
+                new ExcecaoDeCampoObrigatorio()
                         .quandoNulo(new Object(), "")
                         .lancarExcecao()).doesNotThrowAnyException();
     }
@@ -35,17 +34,17 @@ class ExcecaoTest {
         String mensagemEsperada = "Coleção nula.";
 
         Throwable excecao = Assertions.catchThrowable(() ->
-                new Excecao()
+                new ExcecaoDeCampoObrigatorio()
                         .quandoColecaoNula(null, mensagemEsperada)
                         .lancarExcecao());
 
-        Assertions.assertThat(excecao).isInstanceOf(Exception.class).hasMessageContaining(mensagemEsperada);
+        Assertions.assertThat(excecao).isInstanceOf(ExcecaoDeCampoObrigatorio.class).hasMessageContaining(mensagemEsperada);
     }
 
     @Test
     void naoDeveLancarExcecaoCasoColecaoNaoSejaNula() {
         Assertions.assertThatCode(() ->
-                new Excecao()
+                new ExcecaoDeCampoObrigatorio()
                         .quandoColecaoNula(new ArrayList(), "")
                         .lancarExcecao()).doesNotThrowAnyException();
     }
@@ -55,28 +54,31 @@ class ExcecaoTest {
         String mensagemEsperada = "Coleção vazia.";
 
         Throwable excecao = Assertions.catchThrowable(() ->
-                new Excecao()
+                new ExcecaoDeCampoObrigatorio()
                         .quandoColecaoVazia(new ArrayList(), mensagemEsperada)
                         .lancarExcecao());
 
-        Assertions.assertThat(excecao).isInstanceOf(Exception.class).hasMessageContaining(mensagemEsperada);
+        Assertions.assertThat(excecao).isInstanceOf(ExcecaoDeCampoObrigatorio.class).hasMessageContaining(mensagemEsperada);
     }
 
     @Test
     void naoDeveLancarExcecaoCasoColecaoNaoSejaVazia() {
         Assertions.assertThatCode(() ->
-                new Excecao()
+                new ExcecaoDeCampoObrigatorio()
                         .quandoColecaoVazia(List.of("tei"), "")
                         .lancarExcecao()).doesNotThrowAnyException();
     }
 
     @Test
-    void deveLancarExcecaoCasoColecaoSejaNulaEVazia() {
+    void deveRetornarTodasMensagensDeExcecaoEncontradasEmUmUnicoTexto() {
+        String mensagemEsperada = "Objeto é nulo. Coleção Vazia.";
 
-    }
+        Throwable excecao = Assertions.catchThrowable(() ->
+                new ExcecaoDeCampoObrigatorio()
+                        .quandoNulo(null, "Objeto é nulo.")
+                        .quandoColecaoVazia(new ArrayList(), "Coleção Vazia.")
+                        .lancarExcecao());
 
-    @Test
-    void naoDeveLancarExcecaoCasoColecaoNaoSejaNulaNemVazia() {
-
+        Assertions.assertThat(excecao).isInstanceOf(ExcecaoDeCampoObrigatorio.class).hasMessageContaining(mensagemEsperada);
     }
 }
