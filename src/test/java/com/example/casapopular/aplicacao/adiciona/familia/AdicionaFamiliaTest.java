@@ -1,7 +1,7 @@
 package com.example.casapopular.aplicacao.adiciona.familia;
 
 import com.example.casapopular.aplicacao.comum.ExcecaoDeCampoObrigatorio;
-import com.example.casapopular.aplicacao.selecao.PessoaDTO;
+import com.example.casapopular.aplicacao.PessoaDTO;
 import com.example.casapopular.dominio.Familia;
 import com.example.casapopular.dominio.Pessoa;
 import com.example.casapopular.dominio.builder.PessoaBuilder;

@@ -1,4 +1,4 @@
-package com.example.casapopular.aplicacao.selecao;
+package com.example.casapopular.aplicacao;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
