@@ -10,11 +10,12 @@ import java.util.List;
 @Table(name = "Familia")
 public class Familia {
 
-    private final Integer IDADE_MINIMA_PARA_CONSIDERAR_DEPENDENTE = 18;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
+    @Column(name = "nome")
+    private String nome;
+    @OneToMany(mappedBy = "familia", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pessoa> pessoas;
 
     public Familia() {
@@ -27,13 +28,13 @@ public class Familia {
 
     public BigDecimal renda() {
         return pessoas.stream()
-                .filter(pessoa -> pessoa.getIdade() >= IDADE_MINIMA_PARA_CONSIDERAR_DEPENDENTE)
+                .filter(pessoa -> !pessoa.ehDependente())
                 .map(Pessoa::getRenda)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Long quantidadeDeDependentes() {
-        return pessoas.stream().filter(pessoa -> pessoa.getIdade() < IDADE_MINIMA_PARA_CONSIDERAR_DEPENDENTE).count();
+        return pessoas.stream().filter(Pessoa::ehDependente).count();
     }
 
     public List<Pessoa> getPessoas() {
