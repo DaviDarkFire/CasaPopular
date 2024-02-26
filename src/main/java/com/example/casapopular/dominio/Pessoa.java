@@ -12,7 +12,7 @@ import java.time.Period;
 @Table(name = "Pessoa")
 public class Pessoa {
 
-    @Column(name = "idade_minima_para_ser_dependente")
+    @Transient
     private final Integer IDADE_MINIMA_PARA_SER_DEPENDENTE = 18;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
