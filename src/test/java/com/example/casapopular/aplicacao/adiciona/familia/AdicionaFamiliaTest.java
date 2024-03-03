@@ -39,7 +39,8 @@ public class AdicionaFamiliaTest {
 
     @Test
     void naoDeveAdicionarFamiliaCasoListaDePessoasVazia() {
-        AdicionaFamiliaComando comando = new AdicionaFamiliaComando(new ArrayList<>(), Optional.empty());
+        String nomeDaFamilia = "Ferreira";
+        AdicionaFamiliaComando comando = new AdicionaFamiliaComando(nomeDaFamilia, new ArrayList<>(), Optional.empty());
 
         Throwable excecao = Assertions.catchThrowable(() -> adicionaFamilia.executar(comando));
 
@@ -48,7 +49,8 @@ public class AdicionaFamiliaTest {
 
     @Test
     void naoDeveAdicionarFamiliaCasoListaDePessoasNula() {
-        AdicionaFamiliaComando comando = new AdicionaFamiliaComando(null, Optional.empty());
+        String nomeDaFamilia = "Ferreira";
+        AdicionaFamiliaComando comando = new AdicionaFamiliaComando(nomeDaFamilia, null, Optional.empty());
 
         Throwable excecao = Assertions.catchThrowable(() -> adicionaFamilia.executar(comando));
 
@@ -57,7 +59,8 @@ public class AdicionaFamiliaTest {
 
     private AdicionaFamiliaComando inicializarComando() throws Exception {
         List<PessoaDTO> pessoas = criarListaDePessoas();
-        return new AdicionaFamiliaComando(pessoas, Optional.empty());
+        String nomeDaFamilia = "Ferreira";
+        return new AdicionaFamiliaComando(nomeDaFamilia, pessoas, Optional.empty());
     }
 
     private List<PessoaDTO> criarListaDePessoas() {

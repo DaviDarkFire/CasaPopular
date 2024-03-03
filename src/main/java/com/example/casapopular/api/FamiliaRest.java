@@ -22,11 +22,10 @@ public class FamiliaRest {
 
     @PostMapping("/familia")
     public ResponseEntity<String> adicionarFamilia(@RequestBody FamiliaDTO familiaDTO) {
-        AdicionaFamiliaComando comando = new AdicionaFamiliaComando(familiaDTO.pessoas(), Optional.empty());
+        AdicionaFamiliaComando comando = new AdicionaFamiliaComando(familiaDTO.nomeDaFamilia(), familiaDTO.pessoas(), Optional.empty());
         try {
             adicionaFamilia.executar(comando);
         } catch (Exception e) {
-            System.out.println("Deu xabu hein mussarelo: " + e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return new ResponseEntity<>("", HttpStatus.OK);

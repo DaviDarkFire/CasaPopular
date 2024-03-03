@@ -8,10 +8,12 @@ import java.util.Optional;
 
 public class AdicionaFamiliaComando extends Comando {
 
+    private String nomeDaFamilia;
     private List<PessoaDTO> pessoas;
 
-    public AdicionaFamiliaComando(List<PessoaDTO> pessoas, Optional<String> usuario) {
+    public AdicionaFamiliaComando(String nomeDaFamilia, List<PessoaDTO> pessoas, Optional<String> usuario) {
         super(usuario);
+        this.nomeDaFamilia = nomeDaFamilia;
         this.pessoas = pessoas;
     }
 
