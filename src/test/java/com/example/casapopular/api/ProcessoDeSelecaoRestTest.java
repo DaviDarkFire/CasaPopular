@@ -19,25 +19,28 @@ public class ProcessoDeSelecaoRestTest extends TesteDeComponente {
 
     @BeforeEach
     void setUp() throws SQLException {
-       adicionarQuery("INSERT INTO Familia(nome) VALUES ('Santos');");
-       executarQuerys();
+        this.limparBanco();
     }
 
 
     @Test
-    void deveCriarProcessoDeSelecao() throws IOException {
+    void deveCriarProcessoDeSelecao() throws IOException, SQLException {
+        adicionarQuery("INSERT INTO Familia(nome) VALUES ('Santos');");
+        executarQuerys();
         familiaRepositorio.findAll();
         assertNotNull(familiaRepositorio);
 
     }
 
     @Test
-    void deveRetornarStatusDeErroCasoHajaAlgumProblemaAoCriarProcessoDeSelecao() {
-
+    void deveRetornarStatusDeErroCasoHajaAlgumProblemaAoCriarProcessoDeSelecao() throws SQLException {
+        adicionarQuery("INSERT INTO Familia(nome) VALUES ('Silva');");
+        executarQuerys();
+        familiaRepositorio.findAll();
     }
 
     @AfterAll
-    static void tearDown() {
+    static void after() {
         postgreSQLContainer.stop();
     }
 }

@@ -13,6 +13,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -65,6 +66,22 @@ public class TesteDeComponente {
                 throw new RuntimeException("Erro ao executar query sql" + e);
             }
         });
+    }
+
+    protected void limparBanco() throws SQLException {
+        try (Connection connection = this.obterConexao(); Statement statement = connection.createStatement()) {
+            statement.executeUpdate("SET CONSTRAINTS ALL DEFERRED");
+             List<String> tabelas = new ArrayList<>();
+             try (ResultSet tables = connection.getMetaData().getTables(null, null, null, new String[]{"TABLE"})) {
+                while (tables.next()) {
+                    tabelas.add(tables.getString("TABLE_NAME"));
+                }
+            }
+            for (String tabela : tabelas) {
+                statement.executeUpdate("TRUNCATE TABLE " + tabela + " CASCADE");
+            }
+            statement.executeUpdate("SET CONSTRAINTS ALL IMMEDIATE ");
+        }
     }
 
 }
