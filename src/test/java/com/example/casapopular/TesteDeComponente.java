@@ -69,15 +69,15 @@ public class TesteDeComponente {
     }
 
     protected void limparBanco() throws SQLException {
-        try (Connection connection = this.obterConexao(); Statement statement = connection.createStatement()) {
+        try (Connection conexao = this.obterConexao(); Statement statement = conexao.createStatement()) {
             statement.executeUpdate("SET CONSTRAINTS ALL DEFERRED");
-             List<String> tabelas = new ArrayList<>();
-             try (ResultSet tables = connection.getMetaData().getTables(null, null, null, new String[]{"TABLE"})) {
-                while (tables.next()) {
-                    tabelas.add(tables.getString("TABLE_NAME"));
+             List<String> tabelasEmTexto = new ArrayList<>();
+             try (ResultSet tabelas = conexao.getMetaData().getTables(null, null, null, new String[]{"TABLE"})) {
+                while (tabelas.next()) {
+                    tabelasEmTexto.add(tabelas.getString("TABLE_NAME"));
                 }
             }
-            for (String tabela : tabelas) {
+            for (String tabela : tabelasEmTexto) {
                 statement.executeUpdate("TRUNCATE TABLE " + tabela + " CASCADE");
             }
             statement.executeUpdate("SET CONSTRAINTS ALL IMMEDIATE ");
