@@ -53,8 +53,25 @@ public class ProcessoDeSelecaoRestTest extends TesteDeComponente {
     }
 
     @Test
-    void deveRetornarStatusDeErroCasoHajaAlgumProblemaAoCriarProcessoDeSelecao() {
+    void deveRetornarErroCasoSejaNaoSejaInformadaQuantidadeDeFamilias() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("http://localhost:8080/processodeselecao")
+                        .param("quantidadeDeFamilias", "")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(ProcessoDeSelecaoRest.TITULO_RETORNO_BAD_REQUEST)))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(ProcessoDeSelecaoRest.DETALHES_RETORNO_BAD_REQUEST)));
+    }
 
+    @Test
+    void deveRetornarErroSejaInformadaQuantidadeDeFamiliasMenorQueZero() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("http://localhost:8080/processodeselecao")
+                        .param("quantidadeDeFamilias", "-1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(ProcessoDeSelecaoRest.TITULO_RETORNO_BAD_REQUEST)))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(ProcessoDeSelecaoRest.DETALHES_RETORNO_BAD_REQUEST)));
     }
 
     private void popularBancoParaTeste() throws SQLException {
