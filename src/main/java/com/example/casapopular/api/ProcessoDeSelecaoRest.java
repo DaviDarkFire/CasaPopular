@@ -31,13 +31,8 @@ public class ProcessoDeSelecaoRest extends ControladoraRest {
 
     @PostMapping
     public ResponseEntity<Object> realizarProcessoDeSelecao(@RequestParam Integer quantidadeDeFamilias) {
-        //tratar a falta do parâmetro aqui ou no serviço de aplicação?
-        try {
-            ProcessoDeSelecaoDTO processoDeSelecaoDTO = selecionaFamilias.executar(quantidadeDeFamilias);
-            return new ResponseEntity<>(processoDeSelecaoDTO, construirHeaderSucesso(processoDeSelecaoDTO.id()), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(construirRespostaBadRequest(), construirHeaderFracasso(), HttpStatus.BAD_REQUEST);
-        }
+        ProcessoDeSelecaoDTO processoDeSelecaoDTO = selecionaFamilias.executar(quantidadeDeFamilias);
+        return new ResponseEntity<>(processoDeSelecaoDTO, construirHeaderSucesso(processoDeSelecaoDTO.id()), HttpStatus.CREATED);
     }
 
     private void definirMensagemParaRequisicaoBadRequest() {

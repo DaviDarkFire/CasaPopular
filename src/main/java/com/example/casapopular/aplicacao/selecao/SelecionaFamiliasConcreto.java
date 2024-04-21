@@ -30,7 +30,7 @@ public class SelecionaFamiliasConcreto implements SelecionaFamilias {
     }
 
     @Override
-    public ProcessoDeSelecaoDTO executar(Integer quantidadeDeFamilias) throws Exception {
+    public ProcessoDeSelecaoDTO executar(Integer quantidadeDeFamilias) {
         validarQuantidadeDeFamilias(quantidadeDeFamilias);
         List<Familia> todasFamilias = familiaRepositorio.findAll();
         ProcessoDeSelecao processoDeSelecao = servicoParaSelecionarFamilias.selecionar(todasFamilias, quantidadeDeFamilias);
@@ -38,9 +38,9 @@ public class SelecionaFamiliasConcreto implements SelecionaFamilias {
         return mapearProcessoDeSelecao(processoDeSelecao);
     }
 
-    private void validarQuantidadeDeFamilias(Integer quantidadeDeFamilias) throws Exception {
+    private void validarQuantidadeDeFamilias(Integer quantidadeDeFamilias) {
         if (Objects.isNull(quantidadeDeFamilias) || quantidadeDeFamilias < 0) {
-            throw new Exception(MENSAGEM_ESPERADA_PARA_QUANTIDADE_DE_FAMILIAS_INVALIDA);
+            throw new RuntimeException(MENSAGEM_ESPERADA_PARA_QUANTIDADE_DE_FAMILIAS_INVALIDA);
         }
     }
 
